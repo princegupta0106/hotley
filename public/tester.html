@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dedicated API Dashboard</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f0f2f5;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+      }
+      h1,
+      h2 {
+        text-align: center;
+        color: #1a1a1a;
+      }
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      .card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        border-top: 5px solid;
+        display: flex;
+        flex-direction: column;
+      }
+      .card.post {
+        border-top-color: #28a745;
+      }
+      .card.get {
+        border-top-color: #007bff;
+      }
+      .card.put {
+        border-top-color: #ffc107;
+      }
+      .card.delete {
+        border-top-color: #dc3545;
+      }
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .card-header h3 {
+        margin: 0;
+        font-size: 16px;
+      }
+      .badge {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 12px;
+        color: white;
+      }
+      .badge.post {
+        background: #28a745;
+      }
+      .badge.get {
+        background: #007bff;
+      }
+      .badge.put {
+        background: #ffc107;
+      }
+      .badge.delete {
+        background: #dc3545;
+      }
+      code {
+        background: #e9ecef;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 13px;
+        margin-bottom: 10px;
+        display: inline-block;
+      }
+      textarea {
+        width: 100%;
+        height: 120px;
+        padding: 10px;
+        font-family: monospace;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        resize: vertical;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+      }
+      button {
+        padding: 10px;
+        background: #343a40;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.2s;
+      }
+      button:hover {
+        background: #23272b;
+      }
+      pre {
+        background: #212529;
+        color: #00ff00;
+        padding: 15px;
+        border-radius: 4px;
+        overflow-x: auto;
+        font-size: 13px;
+        min-height: 50px;
+        margin-top: 10px;
+        margin-bottom: 0;
+      }
+      .section-title {
+        width: 100%;
+        grid-column: 1 / -1;
+        border-bottom: 2px solid #ccc;
+        padding-bottom: 10px;
+        margin-top: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>API Testing Dashboard</h1>
+
+    <div
+      style="
+        max-width: 1400px;
+        margin: 0 auto 20px auto;
+        background: #eef;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        display: flex;
+        align-items: center;
+        font-family: &quot;Segoe UI&quot;, sans-serif;
+      "
+    >
+      <h3 style="margin: 0; margin-right: 15px">Global Auth Config</h3>
+      <label
+        for="global-jwt-token"
+        style="font-weight: bold; margin-right: 10px"
+        >JWT Token:</label
+      >
+      <input
+        type="text"
+        id="global-jwt-token"
+        placeholder="Paste token here or login to auto-fill"
+        style="
+          flex: 1;
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        "
+      />
+    </div>
+
+    <div class="grid-container">
+      <h2 class="section-title">Auth & Admin APIs</h2>
+
+      <div class="card post">
+        <div class="card-header">
+          <h3>Register Admin</h3>
+          <span class="badge post">POST</span>
+        </div>
+        <code>/api/auth/register</code>
+        <textarea id="payload-auth-reg">
+{
+  "hotel_id": "hotel1",
+  "name": "Jane Manager",
+  "email": "admin1@gmail.com",
+  "password": "mypassword123"
+}</textarea
+        >
+        <button
+          onclick="
+            sendReq(
+              'POST',
+              '/api/auth/register',
+              'payload-auth-reg',
+              'res-auth-reg',
+            )
+          "
+        >
+          Send Request
+        </button>
+        <pre id="res-auth-reg">Response will appear here...</pre>
+      </div>
+
+      <div class="card post">
+        <div class="card-header">
+          <h3>Login Admin</h3>
+          <span class="badge post">POST</span>
+        </div>
+        <code>/api/auth/login</code>
+        <textarea id="payload-auth-login">
+{
+  "email": "admin1@gmail.com",
+  "password": "mypassword123"
+}</textarea
+        >
+        <button onclick="loginAdmin()">Login</button>
+        <pre id="res-auth-login">Response will appear here...</pre>
+      </div>
+
+      <div class="card get">
+        <div class="card-header">
+          <h3>Get All Admins</h3>
+          <span class="badge get">GET</span>
+        </div>
+        <code>/api/auth/admins</code>
+        <button
+          onclick="sendReq('GET', '/api/auth/admins', null, 'res-auth-getall')"
+        >
+          Send Request
+        </button>
+        <pre id="res-auth-getall">Response will appear here...</pre>
+      </div>
+
+      <h2 class="section-title">Hotel APIs</h2>
+
+      <div class="card post">
+        <div class="card-header">
+          <h3>Create Hotel</h3>
+          <span class="badge post">POST</span>
+        </div>
+        <code>/api/hotels</code>
+        <textarea id="payload-hotel-post">
+{
+  "hotel_id": "hotel1",
+  "media_urls": ["image1_link", "image2_link"],
+  "ameneties": ["air conditioning", "washing machine", "kitchen"],
+  "mob_no": "9983798590",
+  "address": "124-12 b wani , jaipur 202033",
+  "mail_id": "abc@gmail.com",
+  "city": "jaipur",
+  "latitude": 12.0213,
+  "longitude": 69.49182,
+  "map_link": "https://maps.app.goo.gl/",
+  "description": "clean hotel",
+  "room": [{"deluxe": "price1"}],
+  "admins": ["admin1@gmail.com"]
+}</textarea
+        >
+        <button
+          onclick="
+            sendReq(
+              'POST',
+              '/api/hotels',
+              'payload-hotel-post',
+              'res-hotel-post',
+            )
+          "
+        >
+          Send Request
+        </button>
+        <pre id="res-hotel-post">Response will appear here...</pre>
+      </div>
+
+      <div class="card get">
+        <div class="card-header">
+          <h3>Get All Hotels</h3>
+          <span class="badge get">GET</span>
+        </div>
+        <code>/api/hotels</code>
+        <button
+          onclick="sendReq('GET', '/api/hotels', null, 'res-hotel-getall')"
+        >
+          Send Request
+        </button>
+        <pre id="res-hotel-getall">Response will appear here...</pre>
+      </div>
+
+      <div class="card get">
+        <div class="card-header">
+          <h3>Get One Hotel</h3>
+          <span class="badge get">GET</span>
+        </div>
+        <code>/api/hotels/hotel1</code>
+        <button
+          onclick="
+            sendReq('GET', '/api/hotels/hotel1', null, 'res-hotel-getone')
+          "
+        >
+          Send Request
+        </button>
+        <pre id="res-hotel-getone">Response will appear here...</pre>
+      </div>
+
+      <div class="card get">
+        <div class="card-header">
+          <h3>Get Hotels by City (Special)</h3>
+          <span class="badge get">GET</span>
+        </div>
+        <code>/api/hotels/city/jaipur</code>
+        <button
+          onclick="
+            sendReq('GET', '/api/hotels/city/jaipur', null, 'res-hotel-getcity')
+          "
+        >
+          Send Request
+        </button>
+        <pre id="res-hotel-getcity">Response will appear here...</pre>
+      </div>
+
+      <div class="card put">
+        <div class="card-header">
+          <h3>Update Hotel</h3>
+          <span class="badge put">PUT</span>
+        </div>
+        <code>/api/hotels/hotel1</code>
+        <textarea id="payload-hotel-put">
+{
+  "description": "Updated clean hotel description",
+  "mob_no": "1111111111"
+}</textarea
+        >
+        <button
+          onclick="
+            sendReq(
+              'PUT',
+              '/api/hotels/hotel1',
+              'payload-hotel-put',
+              'res-hotel-put',
+            )
+          "
+        >
+          Send Request
+        </button>
+        <pre id="res-hotel-put">Response will appear here...</pre>
+      </div>
+
+      <div class="card delete">
+        <div class="card-header">
+          <h3>Delete Hotel</h3>
+          <span class="badge delete">DELETE</span>
+        </div>
+        <code>/api/hotels/hotel1</code>
+        <button
+          onclick="
+            sendReq('DELETE', '/api/hotels/hotel1', null, 'res-hotel-del')
+          "
+        >
+          Send Request
+        </button>
+        <pre id="res-hotel-del">Response will appear here...</pre>
+      </div>
+
+      <h2 class="section-title">Booking APIs</h2>
+
+      <div class="card post">
+        <div class="card-header">
+          <h3>Create Booking</h3>
+          <span class="badge post">POST</span>
+        </div>
+        <code>/api/bookings</code>
+        <textarea id="payload-book-post">
+{
+  "booking_id": "12314124",
+  "hotel_id": "hotel1",
+  "mobile": "99999999",
+  "room": "deluxe",
+  "check_in_month": 4,
+  "check_in_year": 10,
+  "check_in_hr": 14,
+  "check_in_min": 12,
+  "check_in_day": 22,
+  "no_of_guests": 3,
+  "name": "yug garg"
+}</textarea
+        >
+        <button
+          onclick="
+            sendReq(
+              'POST',
+              '/api/bookings',
+              'payload-book-post',
+              'res-book-post',
+            )
+          "
+        >
+          Send Request
+        </button>
+        <pre id="res-book-post">Response will appear here...</pre>
+      </div>
+
+      <div class="card get">
+        <div class="card-header">
+          <h3>Get All Bookings</h3>
+          <span class="badge get">GET</span>
+        </div>
+        <code>/api/bookings</code>
+        <button
+          onclick="sendReq('GET', '/api/bookings', null, 'res-book-getall')"
+        >
+          Send Request
+        </button>
+        <pre id="res-book-getall">Response will appear here...</pre>
+      </div>
+
+      <div class="card get">
+        <div class="card-header">
+          <h3>Get One Booking</h3>
+          <span class="badge get">GET</span>
+        </div>
+        <code>/api/bookings/12314124</code>
+        <button
+          onclick="
+            sendReq('GET', '/api/bookings/12314124', null, 'res-book-getone')
+          "
+        >
+          Send Request
+        </button>
+        <pre id="res-book-getone">Response will appear here...</pre>
+      </div>
+
+      <div class="card get">
+        <div class="card-header">
+          <h3>Get Bookings by Hotel (Special)</h3>
+          <span class="badge get">GET</span>
+        </div>
+        <code>/api/bookings/hotel/hotel1</code>
+        <button
+          onclick="
+            sendReq(
+              'GET',
+              '/api/bookings/hotel/hotel1',
+              null,
+              'res-book-gethotel',
+            )
+          "
+        >
+          Send Request
+        </button>
+        <pre id="res-book-gethotel">Response will appear here...</pre>
+      </div>
+
+      <div class="card put">
+        <div class="card-header">
+          <h3>Update Booking</h3>
+          <span class="badge put">PUT</span>
+        </div>
+        <code>/api/bookings/12314124</code>
+        <textarea id="payload-book-put">
+{
+  "no_of_guests": 4,
+  "mobile": "88888888"
+}</textarea
+        >
+        <button
+          onclick="
+            sendReq(
+              'PUT',
+              '/api/bookings/12314124',
+              'payload-book-put',
+              'res-book-put',
+            )
+          "
+        >
+          Send Request
+        </button>
+        <pre id="res-book-put">Response will appear here...</pre>
+      </div>
+
+      <div class="card delete">
+        <div class="card-header">
+          <h3>Delete Booking</h3>
+          <span class="badge delete">DELETE</span>
+        </div>
+        <code>/api/bookings/12314124</code>
+        <button
+          onclick="
+            sendReq('DELETE', '/api/bookings/12314124', null, 'res-book-del')
+          "
+        >
+          Send Request
+        </button>
+        <pre id="res-book-del">Response will appear here...</pre>
+      </div>
+
+      <h2 class="section-title">City APIs</h2>
+
+      <div class="card post">
+        <div class="card-header">
+          <h3>Create City</h3>
+          <span class="badge post">POST</span>
+        </div>
+        <code>/api/cities</code>
+        <textarea id="payload-city-post">
+{
+  "city": "jaipur",
+  "hotel_ids": ["hotel_id1", "hotel_id2", "hotel_id3"],
+  "longitude": 12.1234276,
+  "latitude": 80.3472873
+}</textarea
+        >
+        <button
+          onclick="
+            sendReq('POST', '/api/cities', 'payload-city-post', 'res-city-post')
+          "
+        >
+          Send Request
+        </button>
+        <pre id="res-city-post">Response will appear here...</pre>
+      </div>
+
+      <div class="card get">
+        <div class="card-header">
+          <h3>Get All Cities</h3>
+          <span class="badge get">GET</span>
+        </div>
+        <code>/api/cities</code>
+        <button
+          onclick="sendReq('GET', '/api/cities', null, 'res-city-getall')"
+        >
+          Send Request
+        </button>
+        <pre id="res-city-getall">Response will appear here...</pre>
+      </div>
+
+      <div class="card get">
+        <div class="card-header">
+          <h3>Get One City</h3>
+          <span class="badge get">GET</span>
+        </div>
+        <code>/api/cities/jaipur</code>
+        <button
+          onclick="
+            sendReq('GET', '/api/cities/jaipur', null, 'res-city-getone')
+          "
+        >
+          Send Request
+        </button>
+        <pre id="res-city-getone">Response will appear here...</pre>
+      </div>
+
+      <div class="card put">
+        <div class="card-header">
+          <h3>Update City</h3>
+          <span class="badge put">PUT</span>
+        </div>
+        <code>/api/cities/jaipur</code>
+        <textarea id="payload-city-put">
+{
+  "longitude": 13.0000000,
+  "latitude": 81.0000000
+}</textarea
+        >
+        <button
+          onclick="
+            sendReq(
+              'PUT',
+              '/api/cities/jaipur',
+              'payload-city-put',
+              'res-city-put',
+            )
+          "
+        >
+          Send Request
+        </button>
+        <pre id="res-city-put">Response will appear here...</pre>
+      </div>
+
+      <div class="card delete">
+        <div class="card-header">
+          <h3>Delete City</h3>
+          <span class="badge delete">DELETE</span>
+        </div>
+        <code>/api/cities/jaipur</code>
+        <button
+          onclick="
+            sendReq('DELETE', '/api/cities/jaipur', null, 'res-city-del')
+          "
+        >
+          Send Request
+        </button>
+        <pre id="res-city-del">Response will appear here...</pre>
+      </div>
+
+      <h2 class="section-title">Media Upload APIs</h2>
+
+      <div class="card post">
+        <div class="card-header">
+          <h3>Upload Single File</h3>
+          <span class="badge post">POST</span>
+        </div>
+        <code>/api/upload/single</code>
+        <p style="font-size: 13px; color: #666; margin-bottom: 5px">
+          Select an image or video to upload:
+        </p>
+        <input type="file" id="single-file-input" style="margin-bottom: 10px" />
+        <button onclick="uploadSingleFile()">Upload File</button>
+        <pre id="res-upload-single">Response will appear here...</pre>
+      </div>
+
+      <div class="card post">
+        <div class="card-header">
+          <h3>Upload Multiple Files</h3>
+          <span class="badge post">POST</span>
+        </div>
+        <code>/api/upload/multiple</code>
+        <p style="font-size: 13px; color: #666; margin-bottom: 5px">
+          Select multiple images/videos (max 10):
+        </p>
+        <input
+          type="file"
+          id="multi-file-input"
+          multiple
+          style="margin-bottom: 10px"
+        />
+        <button onclick="uploadMultipleFiles()">Upload Files</button>
+        <pre id="res-upload-multiple">Response will appear here...</pre>
+      </div>
+    </div>
+
+    <script>
+      async function sendReq(method, url, payloadId, resId) {
+        const resBox = document.getElementById(resId);
+        resBox.textContent = "Loading...";
+
+        let options = {
+          method: method,
+          headers: {},
+        };
+
+        const token = document.getElementById("global-jwt-token").value;
+        if (token) {
+          options.headers["Authorization"] = "Bearer " + token;
+        }
+
+        if (payloadId) {
+          try {
+            const rawData = document.getElementById(payloadId).value;
+            const parsedData = JSON.parse(rawData); // Ensure it's valid JSON
+            options.headers["Content-Type"] = "application/json";
+            options.body = JSON.stringify(parsedData);
+          } catch (e) {
+            resBox.textContent = "Error: Invalid JSON Payload format.";
+            return;
+          }
+        }
+
+        try {
+          const response = await fetch(url, options);
+          const data = await response.json();
+          resBox.textContent = JSON.stringify(data, null, 2);
+        } catch (err) {
+          resBox.textContent = "Error connecting to API: " + err.message;
+        }
+      }
+
+      async function loginAdmin() {
+        const resBox = document.getElementById("res-auth-login");
+        resBox.textContent = "Loading...";
+        try {
+          const rawData = document.getElementById("payload-auth-login").value;
+          const parsedData = JSON.parse(rawData);
+          const response = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(parsedData),
+          });
+          const data = await response.json();
+          resBox.textContent = JSON.stringify(data, null, 2);
+          if (data.token) {
+            document.getElementById("global-jwt-token").value = data.token;
+          }
+        } catch (err) {
+          resBox.textContent = "Error: " + err.message;
+        }
+      }
+
+      async function uploadSingleFile() {
+        const fileInput = document.getElementById("single-file-input");
+        const resBox = document.getElementById("res-upload-single");
+        resBox.textContent = "Uploading...";
+
+        if (fileInput.files.length === 0) {
+          resBox.textContent = "Please select a file first.";
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", fileInput.files[0]);
+
+        try {
+          const response = await fetch("/api/upload/single", {
+            method: "POST",
+            body: formData,
+          });
+          const data = await response.json();
+          resBox.textContent = JSON.stringify(data, null, 2);
+        } catch (err) {
+          resBox.textContent = "Error: " + err.message;
+        }
+      }
+
+      async function uploadMultipleFiles() {
+        const fileInput = document.getElementById("multi-file-input");
+        const resBox = document.getElementById("res-upload-multiple");
+        resBox.textContent = "Uploading...";
+
+        if (fileInput.files.length === 0) {
+          resBox.textContent = "Please select files first.";
+          return;
+        }
+
+        const formData = new FormData();
+        for (let i = 0; i < fileInput.files.length; i++) {
+          formData.append("files", fileInput.files[i]);
+        }
+
+        try {
+          const response = await fetch("/api/upload/multiple", {
+            method: "POST",
+            body: formData,
+          });
+          const data = await response.json();
+          resBox.textContent = JSON.stringify(data, null, 2);
+        } catch (err) {
+          resBox.textContent = "Error: " + err.message;
+        }
+      }
+    </script>
+  </body>
+</html>
