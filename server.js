@@ -9,12 +9,11 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const DB_CONFIG = {
-  host: "gateway01.eu-central-1.prod.aws.tidbcloud.com",
-  port: 4000,
-  user: "2ANsNkLUjenWzLw.root",
-  password: "PI1ENxFjkoSWY4Wv",
-  database: "hotels_data",
-  sslCaPath: "./isrgrootx1.pem",
+  host: "ballast.proxy.rlwy.net",
+  port: 17528,
+  user: "root",
+  password: "lQSSDEQRowYRoCNDZUrcmHNTduRckecI",
+  database: "railway",
 };
 
 const R2_CONFIG = {
@@ -37,9 +36,6 @@ const db = await mysql.createPool({
   user: DB_CONFIG.user,
   password: DB_CONFIG.password,
   database: DB_CONFIG.database,
-  ssl: DB_CONFIG.sslCaPath
-    ? { ca: fs.readFileSync(DB_CONFIG.sslCaPath) }
-    : undefined,
 });
 
 // --- R2 / S3 SETUP ---
