@@ -86,6 +86,37 @@ const JWT_SECRET = "hardcoded_master_secret_123";
   }
 })();
 
+// Ensure hotels table has required columns (non-destructive schema migration)
+(async () => {
+  try {
+    const [[tableRow]] = await db.query(
+      `SELECT COUNT(*) AS cnt
+       FROM INFORMATION_SCHEMA.TABLES
+       WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'hotels'`,
+    );
+
+    if (!tableRow || tableRow.cnt === 0) {
+      console.warn("⚠️ hotels table not found; skipping column checks");
+      return;
+    }
+
+    const [[colRow]] = await db.query(
+      `SELECT COUNT(*) AS cnt
+       FROM INFORMATION_SCHEMA.COLUMNS
+       WHERE TABLE_SCHEMA = DATABASE()
+         AND TABLE_NAME = 'hotels'
+         AND COLUMN_NAME = 'hotel_name'`,
+    );
+
+    if (colRow && colRow.cnt === 0) {
+      await db.query("ALTER TABLE hotels ADD COLUMN hotel_name VARCHAR(255) NULL");
+      console.log("✅ Added hotels.hotel_name column");
+    }
+  } catch (e) {
+    console.error("❌ Failed ensuring hotels table columns:", e.message);
+  }
+})();
+
 // JWT Protection Middleware
 const authenticate = (req, res, next) => {
   const authHeader = req.headers["authorization"];
@@ -100,6 +131,28 @@ const authenticate = (req, res, next) => {
 };
 
 const formatData = (val) => (typeof val === "object" ? JSON.stringify(val) : val);
+
+const safeJsonParse = (val) => {
+  if (val === null || val === undefined) return val;
+  if (typeof val === "object") return val;
+  if (typeof val !== "string") return val;
+  const trimmed = val.trim();
+  if (!trimmed) return val;
+  if (!(trimmed.startsWith("{") || trimmed.startsWith("["))) return val;
+  try {
+    return JSON.parse(trimmed);
+  } catch {
+    return val;
+  }
+};
+
+const normalizeHotel = (hotel) => {
+  if (!hotel || typeof hotel !== "object") return hotel;
+  return {
+    ...hotel,
+    room: safeJsonParse(hotel.room),
+  };
+};
 
 // ================= AUTH APIs =================
 app.post("/api/auth/register", async (req, res) => {
@@ -177,6 +230,10 @@ app.post("/api/upload/multiple", upload.array("files", 10), async (req, res) => 
 // ================= HOTELS APIS =================
 app.post("/api/hotels", async (req, res) => {
   try {
+    const { hotel_id, hotel_name } = req.body || {};
+    if (!hotel_id || !hotel_name) {
+      return res.status(400).json({ error: "hotel_id and hotel_name are required" });
+    }
     const keys = Object.keys(req.body);
     const values = Object.values(req.body).map(formatData);
     const sql = `INSERT INTO hotels (${keys.join(",")}) VALUES (${keys.map(() => "?").join(",")})`;
@@ -190,7 +247,7 @@ app.post("/api/hotels", async (req, res) => {
 app.get("/api/hotels", async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM hotels");
-    res.json(rows);
+    res.json(rows.map(normalizeHotel));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -199,7 +256,7 @@ app.get("/api/hotels", async (req, res) => {
 app.get("/api/hotels/:id", async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM hotels WHERE hotel_id = ?", [req.params.id]);
-    res.json(rows[0] || { message: "Hotel not found" });
+    res.json(normalizeHotel(rows[0]) || { message: "Hotel not found" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -208,7 +265,7 @@ app.get("/api/hotels/:id", async (req, res) => {
 app.get("/api/hotels/city/:city", async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM hotels WHERE city = ?", [req.params.city]);
-    res.json(rows);
+    res.json(rows.map(normalizeHotel));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

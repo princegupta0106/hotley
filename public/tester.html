@@ -210,6 +210,7 @@
         <textarea id="payload-hotel-post">
 {
   "hotel_id": "hotel1",
+  "hotel_name": "Hotel Sunshine",
   "media_urls": ["image1_link", "image2_link"],
   "ameneties": ["air conditioning", "washing machine", "kitchen"],
   "mob_no": "9983798590",
@@ -220,7 +221,23 @@
   "longitude": 69.49182,
   "map_link": "https://maps.app.goo.gl/",
   "description": "clean hotel",
-  "room": [{"deluxe": "price1"}],
+  "room": [
+    {
+      "type": "deluxe",
+      "price": 5000,
+      "description": "Spacious room with a king-size bed and sea view."
+    },
+    {
+      "type": "standard",
+      "price": 2500,
+      "description": "Comfortable cozy room with basic amenities."
+    },
+    {
+      "type": "premium",
+      "price": 8000,
+      "description": "Top tier suite with complimentary breakfast and spa access."
+    }
+  ],
   "admins": ["admin1@gmail.com"]
 }</textarea>
         <button onclick="sendReq('POST', '/api/hotels', 'payload-hotel-post', 'res-hotel-post')">Send Request</button>
@@ -265,6 +282,7 @@
         <code>/api/hotels/hotel1</code>
         <textarea id="payload-hotel-put">
 {
+  "hotel_name": "Hotel Sunshine (Renovated)",
   "description": "Updated clean hotel description",
   "mob_no": "1111111111"
 }</textarea>
