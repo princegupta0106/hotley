@@ -11,7 +11,8 @@
         padding: 20px;
         color: #333;
       }
-      h1, h2 {
+      h1,
+      h2 {
         text-align: center;
         color: #1a1a1a;
       }
@@ -31,10 +32,18 @@
         display: flex;
         flex-direction: column;
       }
-      .card.post { border-top-color: #28a745; }
-      .card.get { border-top-color: #007bff; }
-      .card.put { border-top-color: #ffc107; }
-      .card.delete { border-top-color: #dc3545; }
+      .card.post {
+        border-top-color: #28a745;
+      }
+      .card.get {
+        border-top-color: #007bff;
+      }
+      .card.put {
+        border-top-color: #ffc107;
+      }
+      .card.delete {
+        border-top-color: #dc3545;
+      }
       .card-header {
         display: flex;
         justify-content: space-between;
@@ -52,10 +61,18 @@
         font-size: 12px;
         color: white;
       }
-      .badge.post { background: #28a745; }
-      .badge.get { background: #007bff; }
-      .badge.put { background: #ffc107; }
-      .badge.delete { background: #dc3545; }
+      .badge.post {
+        background: #28a745;
+      }
+      .badge.get {
+        background: #007bff;
+      }
+      .badge.put {
+        background: #ffc107;
+      }
+      .badge.delete {
+        background: #dc3545;
+      }
       code {
         background: #e9ecef;
         padding: 4px 8px;
@@ -141,8 +158,8 @@
     <h1>API Testing Dashboard</h1>
 
     <div class="config-bar">
-      <h3 style="margin: 0;">Global Config</h3>
-      
+      <h3 style="margin: 0">Global Config</h3>
+
       <div class="config-input-group">
         <label for="base-url">Server URL:</label>
         <input type="text" id="base-url" value="http://localhost:3000" />
@@ -150,7 +167,11 @@
 
       <div class="config-input-group">
         <label for="global-jwt-token">JWT Token:</label>
-        <input type="text" id="global-jwt-token" placeholder="Paste token here or login to auto-fill" />
+        <input
+          type="text"
+          id="global-jwt-token"
+          placeholder="Paste token here or login to auto-fill"
+        />
       </div>
     </div>
 
@@ -169,8 +190,20 @@
   "name": "Jane Manager",
   "email": "admin1@gmail.com",
   "password": "mypassword123"
-}</textarea>
-        <button onclick="sendReq('POST', '/api/auth/register', 'payload-auth-reg', 'res-auth-reg')">Send Request</button>
+}</textarea
+        >
+        <button
+          onclick="
+            sendReq(
+              'POST',
+              '/api/auth/register',
+              'payload-auth-reg',
+              'res-auth-reg',
+            )
+          "
+        >
+          Send Request
+        </button>
         <pre id="res-auth-reg">Response will appear here...</pre>
       </div>
 
@@ -184,7 +217,8 @@
 {
   "email": "admin1@gmail.com",
   "password": "mypassword123"
-}</textarea>
+}</textarea
+        >
         <button onclick="loginAdmin()">Login</button>
         <pre id="res-auth-login">Response will appear here...</pre>
       </div>
@@ -195,7 +229,11 @@
           <span class="badge get">GET</span>
         </div>
         <code>/api/auth/admins</code>
-        <button onclick="sendReq('GET', '/api/auth/admins', null, 'res-auth-getall')">Send Request</button>
+        <button
+          onclick="sendReq('GET', '/api/auth/admins', null, 'res-auth-getall')"
+        >
+          Send Request
+        </button>
         <pre id="res-auth-getall">Response will appear here...</pre>
       </div>
 
@@ -239,8 +277,20 @@
     }
   ],
   "admins": ["admin1@gmail.com"]
-}</textarea>
-        <button onclick="sendReq('POST', '/api/hotels', 'payload-hotel-post', 'res-hotel-post')">Send Request</button>
+}</textarea
+        >
+        <button
+          onclick="
+            sendReq(
+              'POST',
+              '/api/hotels',
+              'payload-hotel-post',
+              'res-hotel-post',
+            )
+          "
+        >
+          Send Request
+        </button>
         <pre id="res-hotel-post">Response will appear here...</pre>
       </div>
 
@@ -250,7 +300,11 @@
           <span class="badge get">GET</span>
         </div>
         <code>/api/hotels</code>
-        <button onclick="sendReq('GET', '/api/hotels', null, 'res-hotel-getall')">Send Request</button>
+        <button
+          onclick="sendReq('GET', '/api/hotels', null, 'res-hotel-getall')"
+        >
+          Send Request
+        </button>
         <pre id="res-hotel-getall">Response will appear here...</pre>
       </div>
 
@@ -260,7 +314,13 @@
           <span class="badge get">GET</span>
         </div>
         <code>/api/hotels/hotel1</code>
-        <button onclick="sendReq('GET', '/api/hotels/hotel1', null, 'res-hotel-getone')">Send Request</button>
+        <button
+          onclick="
+            sendReq('GET', '/api/hotels/hotel1', null, 'res-hotel-getone')
+          "
+        >
+          Send Request
+        </button>
         <pre id="res-hotel-getone">Response will appear here...</pre>
       </div>
 
@@ -270,7 +330,13 @@
           <span class="badge get">GET</span>
         </div>
         <code>/api/hotels/city/jaipur</code>
-        <button onclick="sendReq('GET', '/api/hotels/city/jaipur', null, 'res-hotel-getcity')">Send Request</button>
+        <button
+          onclick="
+            sendReq('GET', '/api/hotels/city/jaipur', null, 'res-hotel-getcity')
+          "
+        >
+          Send Request
+        </button>
         <pre id="res-hotel-getcity">Response will appear here...</pre>
       </div>
 
@@ -285,8 +351,20 @@
   "hotel_name": "Hotel Sunshine (Renovated)",
   "description": "Updated clean hotel description",
   "mob_no": "1111111111"
-}</textarea>
-        <button onclick="sendReq('PUT', '/api/hotels/hotel1', 'payload-hotel-put', 'res-hotel-put')">Send Request</button>
+}</textarea
+        >
+        <button
+          onclick="
+            sendReq(
+              'PUT',
+              '/api/hotels/hotel1',
+              'payload-hotel-put',
+              'res-hotel-put',
+            )
+          "
+        >
+          Send Request
+        </button>
         <pre id="res-hotel-put">Response will appear here...</pre>
       </div>
 
@@ -296,7 +374,13 @@
           <span class="badge delete">DELETE</span>
         </div>
         <code>/api/hotels/hotel1</code>
-        <button onclick="sendReq('DELETE', '/api/hotels/hotel1', null, 'res-hotel-del')">Send Request</button>
+        <button
+          onclick="
+            sendReq('DELETE', '/api/hotels/hotel1', null, 'res-hotel-del')
+          "
+        >
+          Send Request
+        </button>
         <pre id="res-hotel-del">Response will appear here...</pre>
       </div>
 
@@ -321,8 +405,20 @@
   "check_in_day": 22,
   "no_of_guests": 3,
   "name": "yug garg"
-}</textarea>
-        <button onclick="sendReq('POST', '/api/bookings', 'payload-book-post', 'res-book-post')">Send Request</button>
+}</textarea
+        >
+        <button
+          onclick="
+            sendReq(
+              'POST',
+              '/api/bookings',
+              'payload-book-post',
+              'res-book-post',
+            )
+          "
+        >
+          Send Request
+        </button>
         <pre id="res-book-post">Response will appear here...</pre>
       </div>
 
@@ -332,7 +428,11 @@
           <span class="badge get">GET</span>
         </div>
         <code>/api/bookings</code>
-        <button onclick="sendReq('GET', '/api/bookings', null, 'res-book-getall')">Send Request</button>
+        <button
+          onclick="sendReq('GET', '/api/bookings', null, 'res-book-getall')"
+        >
+          Send Request
+        </button>
         <pre id="res-book-getall">Response will appear here...</pre>
       </div>
 
@@ -342,7 +442,13 @@
           <span class="badge get">GET</span>
         </div>
         <code>/api/bookings/12314124</code>
-        <button onclick="sendReq('GET', '/api/bookings/12314124', null, 'res-book-getone')">Send Request</button>
+        <button
+          onclick="
+            sendReq('GET', '/api/bookings/12314124', null, 'res-book-getone')
+          "
+        >
+          Send Request
+        </button>
         <pre id="res-book-getone">Response will appear here...</pre>
       </div>
 
@@ -352,7 +458,18 @@
           <span class="badge get">GET</span>
         </div>
         <code>/api/bookings/hotel/hotel1</code>
-        <button onclick="sendReq('GET', '/api/bookings/hotel/hotel1', null, 'res-book-gethotel')">Send Request</button>
+        <button
+          onclick="
+            sendReq(
+              'GET',
+              '/api/bookings/hotel/hotel1',
+              null,
+              'res-book-gethotel',
+            )
+          "
+        >
+          Send Request
+        </button>
         <pre id="res-book-gethotel">Response will appear here...</pre>
       </div>
 
@@ -366,8 +483,20 @@
 {
   "no_of_guests": 4,
   "mobile": "88888888"
-}</textarea>
-        <button onclick="sendReq('PUT', '/api/bookings/12314124', 'payload-book-put', 'res-book-put')">Send Request</button>
+}</textarea
+        >
+        <button
+          onclick="
+            sendReq(
+              'PUT',
+              '/api/bookings/12314124',
+              'payload-book-put',
+              'res-book-put',
+            )
+          "
+        >
+          Send Request
+        </button>
         <pre id="res-book-put">Response will appear here...</pre>
       </div>
 
@@ -377,7 +506,13 @@
           <span class="badge delete">DELETE</span>
         </div>
         <code>/api/bookings/12314124</code>
-        <button onclick="sendReq('DELETE', '/api/bookings/12314124', null, 'res-book-del')">Send Request</button>
+        <button
+          onclick="
+            sendReq('DELETE', '/api/bookings/12314124', null, 'res-book-del')
+          "
+        >
+          Send Request
+        </button>
         <pre id="res-book-del">Response will appear here...</pre>
       </div>
 
@@ -395,8 +530,15 @@
   "hotel_ids": ["hotel_id1", "hotel_id2", "hotel_id3"],
   "longitude": 12.1234276,
   "latitude": 80.3472873
-}</textarea>
-        <button onclick="sendReq('POST', '/api/cities', 'payload-city-post', 'res-city-post')">Send Request</button>
+}</textarea
+        >
+        <button
+          onclick="
+            sendReq('POST', '/api/cities', 'payload-city-post', 'res-city-post')
+          "
+        >
+          Send Request
+        </button>
         <pre id="res-city-post">Response will appear here...</pre>
       </div>
 
@@ -406,7 +548,11 @@
           <span class="badge get">GET</span>
         </div>
         <code>/api/cities</code>
-        <button onclick="sendReq('GET', '/api/cities', null, 'res-city-getall')">Send Request</button>
+        <button
+          onclick="sendReq('GET', '/api/cities', null, 'res-city-getall')"
+        >
+          Send Request
+        </button>
         <pre id="res-city-getall">Response will appear here...</pre>
       </div>
 
@@ -416,7 +562,13 @@
           <span class="badge get">GET</span>
         </div>
         <code>/api/cities/jaipur</code>
-        <button onclick="sendReq('GET', '/api/cities/jaipur', null, 'res-city-getone')">Send Request</button>
+        <button
+          onclick="
+            sendReq('GET', '/api/cities/jaipur', null, 'res-city-getone')
+          "
+        >
+          Send Request
+        </button>
         <pre id="res-city-getone">Response will appear here...</pre>
       </div>
 
@@ -430,8 +582,20 @@
 {
   "longitude": 13.0000000,
   "latitude": 81.0000000
-}</textarea>
-        <button onclick="sendReq('PUT', '/api/cities/jaipur', 'payload-city-put', 'res-city-put')">Send Request</button>
+}</textarea
+        >
+        <button
+          onclick="
+            sendReq(
+              'PUT',
+              '/api/cities/jaipur',
+              'payload-city-put',
+              'res-city-put',
+            )
+          "
+        >
+          Send Request
+        </button>
         <pre id="res-city-put">Response will appear here...</pre>
       </div>
 
@@ -441,7 +605,13 @@
           <span class="badge delete">DELETE</span>
         </div>
         <code>/api/cities/jaipur</code>
-        <button onclick="sendReq('DELETE', '/api/cities/jaipur', null, 'res-city-del')">Send Request</button>
+        <button
+          onclick="
+            sendReq('DELETE', '/api/cities/jaipur', null, 'res-city-del')
+          "
+        >
+          Send Request
+        </button>
         <pre id="res-city-del">Response will appear here...</pre>
       </div>
 
@@ -470,7 +640,12 @@
         <p style="font-size: 13px; color: #666; margin-bottom: 5px">
           Select multiple images/videos (max 10):
         </p>
-        <input type="file" id="multi-file-input" multiple style="margin-bottom: 10px" />
+        <input
+          type="file"
+          id="multi-file-input"
+          multiple
+          style="margin-bottom: 10px"
+        />
         <button onclick="uploadMultipleFiles()">Upload Files</button>
         <pre id="res-upload-multiple">Response will appear here...</pre>
       </div>
@@ -499,7 +674,7 @@
         if (payloadId) {
           try {
             const rawData = document.getElementById(payloadId).value;
-            const parsedData = JSON.parse(rawData); 
+            const parsedData = JSON.parse(rawData);
             options.headers["Content-Type"] = "application/json";
             options.body = JSON.stringify(parsedData);
           } catch (e) {
@@ -514,7 +689,9 @@
           const data = await response.json();
           resBox.textContent = JSON.stringify(data, null, 2);
         } catch (err) {
-          resBox.textContent = "Error connecting to API. Is your server running?\nDetails: " + err.message;
+          resBox.textContent =
+            "Error connecting to API. Is your server running?\nDetails: " +
+            err.message;
         }
       }
 
@@ -525,7 +702,7 @@
           const rawData = document.getElementById("payload-auth-login").value;
           const parsedData = JSON.parse(rawData);
           const fullUrl = getBaseUrl() + "/api/auth/login";
-          
+
           const response = await fetch(fullUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -533,12 +710,14 @@
           });
           const data = await response.json();
           resBox.textContent = JSON.stringify(data, null, 2);
-          
+
           if (data.token) {
             document.getElementById("global-jwt-token").value = data.token;
           }
         } catch (err) {
-          resBox.textContent = "Error connecting to API. Is your server running?\nDetails: " + err.message;
+          resBox.textContent =
+            "Error connecting to API. Is your server running?\nDetails: " +
+            err.message;
         }
       }
 
@@ -564,7 +743,9 @@
           const data = await response.json();
           resBox.textContent = JSON.stringify(data, null, 2);
         } catch (err) {
-          resBox.textContent = "Error connecting to API. Is your server running?\nDetails: " + err.message;
+          resBox.textContent =
+            "Error connecting to API. Is your server running?\nDetails: " +
+            err.message;
         }
       }
 
@@ -592,7 +773,9 @@
           const data = await response.json();
           resBox.textContent = JSON.stringify(data, null, 2);
         } catch (err) {
-          resBox.textContent = "Error connecting to API. Is your server running?\nDetails: " + err.message;
+          resBox.textContent =
+            "Error connecting to API. Is your server running?\nDetails: " +
+            err.message;
         }
       }
     </script>
